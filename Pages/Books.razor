@@ -18,12 +18,12 @@
                 <input id="author" type="text" class="form-control" placeholder="Автор книги" @bind="новая_книга.author" />
             </div>
             <input type="submit" class="btn btn-dark" value="Добавить" />
-        </div>        
-    </div>    
+        </div>
+    </div>
 </EditForm>
 
 
-@foreach (blazor2.Models.книга новая_книга in service.get().Reverse())
+@foreach (blazor2.Models.книга новая_книга in книги)
 {
     <div class="card mt-3">
         <div class="card-header">
@@ -36,9 +36,11 @@
 }
 
 @code {
-    protected override void OnInitialized()
+    List<blazor2.Models.книга> книги;
+
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
+        книги = await service.get();
 
         //service.add(new Models.книга { name = "Программирование на C#", author = "Сидоров С.А." });
         //service.add(new Models.книга { name = "Основы Python", author = "Петров П.С." });

@@ -1,5 +1,6 @@
 ﻿using blazor2.Data;
 using blazor2.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace blazor2.Services
 {
     public interface IBookServise
     {
-        public IList<книга> get();
-        public void add(книга новая_книга);
+        Task<List<книга>> get();
+        Task<книга> add(книга новая_книга);
     }
 
     public class BookService : IBookServise
@@ -22,18 +23,19 @@ namespace blazor2.Services
             _context = context;
         }
 
-        public IList<книга> get()
+        public async Task<List<книга>> get()
         {
-            return _context.книги.ToList();
+            return await _context.книги.ToListAsync();
         }
 
-        public void add(книга новая_книга)
+        public async Task<книга> add(книга новая_книга)
         {
             if (!String.IsNullOrEmpty(новая_книга.name) && !String.IsNullOrEmpty(новая_книга.author))
             {
                 _context.книги.Add(новая_книга);
-                 _context.SaveChanges();
-            }            
+                await _context.SaveChangesAsync();
+            }
+            return новая_книга;
         }
         
     }
