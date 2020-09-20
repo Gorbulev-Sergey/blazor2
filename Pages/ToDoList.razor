@@ -1,0 +1,67 @@
+﻿@page "/todolist"
+
+@using blazor2.Data
+@using blazor2.Services
+@using blazor2.Models
+@inject IToDoListService service
+
+<h1>Список ToDo</h1>
+
+@if (toDoList == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Task</th>
+                <th>Status</th>
+                <th>Due Date</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var toDoItem in toDoList)
+            {
+                <tr>
+                    <td>@toDoItem.Name</td>
+                    <td>@toDoItem.Status</td>
+                    <td>@toDoItem.DueDate.ToShortDateString()</td>
+                    <td><input type="button" class="btn btn-primary" value="Edit" /></td>
+                    <td><input type="button" class="btn btn-danger" value="Delete" /></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div>
+        <input type="button" data-toggle="modal" data-target="#taskModal" class="btn btn-primary" value="Добавить задание" @onclick="(() => InitializeTaskObject())" />
+    </div>
+
+    <TaskDetail TaskObject=taskObject DataChanged="DataChanged"></TaskDetail>
+}
+
+@code {
+    List<ToDo> toDoList;
+    ToDo taskObject = new ToDo();
+
+    protected override async Task OnInitializedAsync()
+    {
+        toDoList = await service.Get();
+    }
+
+    private void InitializeTaskObject()
+    {
+        taskObject = new ToDo();
+        taskObject.DueDate = DateTime.Now;
+    }
+
+    private async void DataChanged()
+    {
+        toDoList = await service.Get();
+        StateHasChanged();
+    }
+}
