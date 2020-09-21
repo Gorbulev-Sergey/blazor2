@@ -10,8 +10,9 @@ namespace blazor2.Services
 {
     public interface IBookServise
     {
-        Task<List<книга>> get();
-        Task<книга> add(книга новая_книга);
+        public IList<книга> get();
+        public Task<List<книга>> get_async();
+        public void add(книга новая_книга);
     }
 
     public class BookService : IBookServise
@@ -23,20 +24,25 @@ namespace blazor2.Services
             _context = context;
         }
 
-        public async Task<List<книга>> get()
+        public IList<книга> get()
+        {
+            return  _context.книги.ToList();
+        }
+
+        public async Task<List<книга>> get_async()
         {
             return await _context.книги.ToListAsync();
         }
 
-        public async Task<книга> add(книга новая_книга)
+        public void add(книга новая_книга)
         {
             if (!String.IsNullOrEmpty(новая_книга.name) && !String.IsNullOrEmpty(новая_книга.author))
             {
                 _context.книги.Add(новая_книга);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
             }
-            return новая_книга;
         }
+
         
     }
 }

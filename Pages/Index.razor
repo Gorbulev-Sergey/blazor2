@@ -1,13 +1,13 @@
 ﻿@page "/"
-
+@using blazor2.Pages.Post
 @inject blazor2.Services.ITakeMessageService service
+@inject blazor2.Services.IBookServise СервисКниг
 
 <h1>Привет, мир!</h1>
 
-Добро пожаловать в ваше новое приложение.
+<p>Добро пожаловать в ваше новое приложение.</p>
+<br />
+<h3 class="badge badge-success mt-4">@service.take()</h3>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
-
-<img class="card-img" src="https://naked-science.ru/wp-content/uploads/2020/02/mars.jpg" />
-
-<h4 class="badge badge-success mt-4">@service.take()</h4>
+<Post></Post>
+<div hidden>@СервисКниг.get()</div> 

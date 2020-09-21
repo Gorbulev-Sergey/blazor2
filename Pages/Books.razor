@@ -1,9 +1,10 @@
 ﻿@page "/books"
 
 @using blazor2.Services
+@using blazor2.Pages.Книга 
 @inject IBookServise service
 
-<h3>Книги</h3>
+<h2>Книги</h2>
 
 <EditForm Model="@новая_книга" OnValidSubmit="@OnValidSubmit">
     <DataAnnotationsValidator />
@@ -22,29 +23,15 @@
     </div>
 </EditForm>
 
-
-@foreach (blazor2.Models.книга новая_книга in книги)
+@foreach (blazor2.Models.книга новая_книга in service.get().Reverse())
 {
-    <div class="card mt-3">
-        <div class="card-header">
-            <h3>Книга: @новая_книга.name</h3>
-        </div>
-        <div class="card-body">
-            <p>Автор: @новая_книга.author</p>
-        </div>
-    </div>
+    <Книга Название="@новая_книга.name" Автор="@новая_книга.author"></Книга>
 }
 
 @code {
-    List<blazor2.Models.книга> книги;
-
     protected override async Task OnInitializedAsync()
     {
-        книги = await service.get();
 
-        //service.add(new Models.книга { name = "Программирование на C#", author = "Сидоров С.А." });
-        //service.add(new Models.книга { name = "Основы Python", author = "Петров П.С." });
-        //service.add(new Models.книга { name = "Что такое net.core", author = "Смыслов С.В." });
     }
 
     blazor2.Models.книга новая_книга = new Models.книга();
