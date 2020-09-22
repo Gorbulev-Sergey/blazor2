@@ -3,6 +3,7 @@
 
 <h1>Проверка регистрации пользователя</h1>
 
+@*Первый вариант*@
 @if (Пользователь_аутентифицирован)
 {
 <p class="alert alert-info">Пользователь аутентифицирован (@user_name) </p>
@@ -11,6 +12,16 @@ else
 {
     <p class="alert alert-danger">Пользователь не аутентифицирован</p>
 }
+
+@*Второй вариант*@
+<AuthorizeView>
+    <Authorized>
+        <p class="alert alert-info">Пользователь аутентифицирован (@context.User.Identity.Name) </p>
+    </Authorized>
+    <NotAuthorized>
+        <p class="alert alert-danger">Пользователь не аутентифицирован</p>
+    </NotAuthorized>
+</AuthorizeView>
 
 
 @code {
