@@ -1,0 +1,9 @@
+﻿@page "/рендеринг_html_строки"
+
+<h1>Рендеринг_html_строки</h1>
+
+@((MarkupString)строка)
+
+@code {
+        string строка = "<div class='card'><div class='card-body'><p>Всем привет</p></div></div>";
+}
