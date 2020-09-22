@@ -1,0 +1,28 @@
+﻿@page "/Проверка_регистрации_пользователя"
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<h1>Проверка регистрации пользователя</h1>
+
+@if (Пользователь_аутентифицирован)
+{
+<p class="alert alert-info">Пользователь аутентифицирован (@user_name) </p>
+}
+else
+{
+    <p class="alert alert-danger">Пользователь не аутентифицирован</p>
+}
+
+
+@code {
+    bool Пользователь_аутентифицирован = false;
+    string user_name;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var user = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
+
+        Пользователь_аутентифицирован = user.Identity.IsAuthenticated;
+        user_name = user.Identity.Name;
+    }
+
+}
